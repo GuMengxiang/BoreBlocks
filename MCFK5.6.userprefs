@@ -2,12 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/GameCameraControll.cs">
     <Files>
-      <File FileName="Assets/Resources/Scripts/GameCameraControll.cs" Line="16" Column="13" />
-      <File FileName="Assets/EasyTouchBundle/EasyTouchControls/Plugins/ETCDPad.cs" Line="1" Column="1" />
-      <File FileName="Assets/EasyTouchBundle/EasyTouchControls/Plugins/ETCBase.cs" Line="1" Column="1" />
-      <File FileName="Assets/Resources/Scripts/GenerateObject.cs" Line="74" Column="97" />
+      <File FileName="Assets/Resources/Scripts/GameCameraControll.cs" Line="75" Column="3" />
+      <File FileName="Assets/Resources/Scripts/GenerateObject.cs" Line="203" Column="96" />
+      <File FileName="Assets/Resources/Scripts/ThisGameLoading.cs" Line="1" Column="1" />
       <File FileName="Assets/Resources/Scripts/thisGameUIManagement.cs" Line="1" Column="1" />
-      <File FileName="Assets/Resources/Scripts/ThisGameTouchControll.cs" Line="1" Column="1" />
       <File FileName="Assets/Resources/Scripts/ThisGame_EventManager.cs" Line="1" Column="1" />
       <File FileName="Assets/EasyTouchBundle/EasyTouch/Examples/5.X new features/Script/SimpleActionExample.cs" Line="1" Column="1" />
       <File FileName="Assets/Resources/Scripts/ThisGameModel.cs" Line="1" Column="1" />
@@ -16,6 +14,7 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/quseit/Desktop/GMX_UnityProject/MCFK5.6/Assets/Resources/Scripts/thisGameUIManagement.cs" line="58" column="1" />
+      <Breakpoint file="/Users/quseit/Desktop/GMX_UnityProject/MCFK5.6/Assets/Resources/Scripts/GenerateObject.cs" line="214" column="32" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

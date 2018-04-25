@@ -10,7 +10,11 @@ using UnityEngine.SceneManagement;
 public class ThisGameLoading : MonoBehaviour {
 
 	// 滑动条  
-	private Slider processBar;  
+//	private Slider processBar;  
+
+	//过场动画
+	private Animator anim_Jitter;
+	private Animator anim_Gradient;
 
 	// Application.LoadLevelAsync()这个方法的返回值类型是AsyncOperation  
 	private AsyncOperation async;  
@@ -19,7 +23,9 @@ public class ThisGameLoading : MonoBehaviour {
 
 	private void Awake() 
 	{ 
-		processBar=transform.Find("Slider").GetComponent<Slider>();
+//		processBar=transform.Find("Slider").GetComponent<Slider>();
+		anim_Jitter=transform.Find("BG/LoadingImage").GetComponent<Animator>();
+
 	}
 
 	// Use this for initialization
@@ -73,14 +79,21 @@ public class ThisGameLoading : MonoBehaviour {
 		}  
 
 		// 设置滑动条的value  
-		processBar.value = nowprocess / 100f;  
+//		processBar.value = nowprocess / 100f;  
 
 		// 如果滑动条的值等于100，说明加载完毕  
 		if (nowprocess == 100) {  
-			// 设置为true的时候，如果场景数据加载完毕，就可以自动跳转场景  
-			async.allowSceneActivation = true;  
+
+			anim_Jitter.speed=0;//停止跳动的方块动画播放
+			transform.Find("BG/LoadingImage").gameObject.SetActive(false);
+			transform.Find("BG").GetComponent<Animator>().enabled=true;
+			Invoke("Data_completion",0.2f);
 		}  
 	}
 
-
+	public void Data_completion()
+	{
+		// 设置为true的时候，如果场景数据加载完毕，就可以自动跳转场景  
+		async.allowSceneActivation = true;  
+	}
 }

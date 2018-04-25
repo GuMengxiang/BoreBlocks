@@ -28,7 +28,7 @@ public class GenerateObject : MonoBehaviour {
 	//通关后隐藏的地面
 	public GameObject mGround;
 
-	public ModeType mGameType;
+//	public ModeType mGameType;
 //	int LockOrNot= 1 ;//关卡是锁上还是没锁上  1:解锁  0:未解锁
 //	int SceneSub = 0 ;//场景的下标
 	//private Color mBoxColor;//生成的物体的颜色//20180117  按需求去掉调色板
@@ -46,8 +46,10 @@ public class GenerateObject : MonoBehaviour {
 		//transform.position=new Vector3(0.1f,CubeObj.transform.localPosition.y*10,CubeObj.transform.localPosition.z*10);
 
 		mPlay=GameObject.Find("GameManagement").transform.GetComponent<AudioSource>();//获取声音
-		//运行开始的时候关闭特效
+		//激活地面
 		mGround.SetActive(true);
+		GameObject.Find("MyCamera").GetComponent<QuickSwipe>().EnabledQuickComponent("mCamare02");
+		GameObject.Find("MyCamera/Main Camera").GetComponent<QuickSwipe>().EnabledQuickComponent("mCamare01");
 	
 	}
 	
@@ -56,28 +58,25 @@ public class GenerateObject : MonoBehaviour {
 		if (Input.GetKeyUp(KeyCode.Mouse0)) {
 			CameraRay();
 		}
-		mGameType=(ModeType)UIInterface_01.transform.Find("GameMode").GetComponent<Dropdown>().value;
-		switch (mGameType )
-		{
-		case ModeType.十字键滑杆模式:
-			
-			UIInterface_01.transform.Find("EasyTouchControlsCanvas").gameObject.SetActive(true);
-			break;
-		case ModeType.滑动模型模式:
-			//激活拥有相同名字的QUICHK组件
-			GameObject.Find("CubeControl").	GetComponent<QuickSwipe>().EnabledQuickComponent("SwipeCubeLR");
-			GameObject.Find("CubeControl").	GetComponent<QuickSwipe>().EnabledQuickComponent("SwipeCubeUD");
-			mGround.SetActive(false);
-			break;
-		case ModeType.自动追寻模式:
-			UIInterface_01.transform.Find("EasyTouchControlsCanvas").gameObject.SetActive(false);
-			GameObject.Find("CubeControl").	GetComponent<QuickSwipe>().EnabledQuickComponent("SwipeCubeLR");
-			//this.gameObject.transform.LookAt(GameObject.Find("CubeControl").transform);
-			mCame_01.transform.DOLookAt(new Vector3(GameObject.Find("CubeControl").transform.position.x,GameObject.Find("CubeControl").transform.position.y,GameObject.Find("CubeControl").transform.position.z),0.5f);
-			break;
-		default:
-			break;
-		}
+//		mGameType=(ModeType)UIInterface_01.transform.Find("GameMode").GetComponent<Dropdown>().value;
+//		switch (mGameType )
+//		{
+//
+//		case ModeType.滑动模型模式:
+//			//激活拥有相同名字的QUICHK组件
+//			GameObject.Find("CubeControl").	GetComponent<QuickSwipe>().EnabledQuickComponent("SwipeCubeLR");
+//			GameObject.Find("CubeControl").	GetComponent<QuickSwipe>().EnabledQuickComponent("SwipeCubeUD");
+//			mGround.SetActive(false);
+//			break;
+//		case ModeType.自动追寻模式:
+//			
+//			GameObject.Find("CubeControl").	GetComponent<QuickSwipe>().EnabledQuickComponent("SwipeCubeLR");
+//			//this.gameObject.transform.LookAt(GameObject.Find("CubeControl").transform);
+//			mCame_01.transform.DOLookAt(new Vector3(GameObject.Find("CubeControl").transform.position.x,GameObject.Find("CubeControl").transform.position.y,GameObject.Find("CubeControl").transform.position.z),0.5f);
+//			break;
+//		default:
+//			break;
+//		}
 
 
 //		testcubecolor.GetComponent<MeshRenderer >().material.color=thisGameUIManagement.mBoxColor;/*摄像机下挂在的test调色板的cube*/
@@ -110,8 +109,6 @@ public class GenerateObject : MonoBehaviour {
 					}
 
 					i++;
-//					_Tip.SetActive(true);
-//					_Arr.SetActive(true);
 				} 
 				else 
 				{
@@ -172,27 +169,11 @@ public class GenerateObject : MonoBehaviour {
 
 //				_Arr.transform.position=new Vector3(mObj.transform.position.x,mObj.transform.position.y+1.0f,mObj.transform.position.z+0.20f);//this.gameObject.GetComponent<Camera>().WorldToScreenPoint(mObj.transform.position);
 				#region 摄像机自动旋转跟随
-				switch (mGameType )
-				{
-				case ModeType.十字键滑杆模式:
+
 					mGround.SetActive(true);
 					//激死拥有相同名字的QUICHK组件
 					GameObject.Find("CubeControl").	GetComponent<QuickSwipe>().DisabledQuickComponent("SwipeCubeLR");
 					GameObject.Find("CubeControl").	GetComponent<QuickSwipe>().DisabledQuickComponent("SwipeCubeUD");
-					break;
-				case ModeType.滑动模型模式:
-//					mObj.transform.rotation=new Quaternion(0.0f,0.0f,0.0f,0.0f);
-					break;
-				case ModeType.自动追寻模式:
-					mGround.SetActive(true);
-					//激死拥有相同名字的QUICHK组件
-					GameObject.Find("CubeControl").	GetComponent<QuickSwipe>().DisabledQuickComponent("SwipeCubeLR");
-					GameObject.Find("CubeControl").	GetComponent<QuickSwipe>().DisabledQuickComponent("SwipeCubeUD");
-					this.gameObject.transform.position =mObj.transform.position+offset;
-					break;
-				default:
-					break;
-				}
 				//this.gameObject.transform.LookAt(mObj.transform);   
 				mCame_01.transform.DOLookAt(new Vector3(mObj.transform.position.x,mObj.transform.position.y,mObj.transform.position.z)/*mObj.transform.position*//*旋转角度*/,0.5f/*时间*/);
 				//this.gameObject.transform.position=Vector3.Lerp(this.transform.position,mObj.transform.position+offset,1.0f * Time.deltaTime);
@@ -217,14 +198,19 @@ public class GenerateObject : MonoBehaviour {
 			Debug.Log("点击生成物体"+ListSub+","+_gameScene.Count );
 		}
 		if (RedSub >_gameScene.Count-1 && nextlock < ThisGameModel.ModelDic.Count-1/*3*//*正确的代码，前面的4是测试用，当nextlock小于modeldic字典内的元素*/ ) {
-						
 
+						GameObject.Find("CubeControl").transform.GetComponent<AudioSource>().Play();//播放结束的音效
+						GameObject.Find("CubeControl").transform.localScale=new Vector3(1.5f,1.5f,1.5f);//结束后放大模型
 //      			Invoke("PopupWindon",3.0f);//经过3.0f后实例弹窗 /*20170110 更改需求，“恭喜过关的弹窗”在游戏结束后直接实例化*/
 //			_gameScene.Clear();
 			Debug.Log("UI界面出现");
 						UIInterface_01.gameObject.SetActive(false);
 						UIInterface_02.gameObject.SetActive(true);
-						//GameObject.Find("CubeControl").	GetComponent<QuickSwipe>().enabled=true;//transform.parent=GameObject.Find("SwipeCube").transform;
+						//GameObject.Find("CubeControl").	GetComponent<QuickSwipe>().enabled=true;//transform.parent=GameObject.Find("SwipeCube").transformGameObject.Find("CubeControl").transform.position=new Vector3(0,0,0);
+						GameObject.Find("MyCamera").	GetComponent<QuickSwipe>().DisabledQuickComponent("mCamare02");
+						GameObject.Find("MyCamera/Main Camera").	GetComponent<QuickSwipe>().DisabledQuickComponent("mCamare01");
+						this.transform.position=new Vector3(0,2.5f,-2.5f);
+						mCame_01.gameObject.transform.LookAt(GameObject.Find("CubeControl").transform);
 						mGround.SetActive(false);
 						//激活拥有相同名字的QUICHK组件
 						GameObject.Find("CubeControl").	GetComponent<QuickSwipe>().EnabledQuickComponent("SwipeCubeLR");
@@ -232,8 +218,7 @@ public class GenerateObject : MonoBehaviour {
 
 
 			Onlock();
-//			_Tip.SetActive(false);
-//			_Arr.SetActive(false);
+
 		}
 
 	}
@@ -274,10 +259,7 @@ public class GenerateObject : MonoBehaviour {
 			}
 			break;
 		}*/
-		///窗口出来后关闭特效
-//		mFireworkEffects_01.gameObject.SetActive(false);
-//		mFireworkEffects_02.gameObject.SetActive(false);
-//		mFireworkEffects_03.gameObject.SetActive(false);
+
 	}
 
 	public void Onlock()
@@ -336,7 +318,7 @@ public class GenerateObject : MonoBehaviour {
 		
 	}
 
-	private GameLevel mlevel;
+	public static GameLevel mlevel;
 	/// <summary>
 	/// 序列化
 	/// </summary>
@@ -364,10 +346,10 @@ public class GenerateObject : MonoBehaviour {
 /// <summary>
 /// 游戏模式
 /// </summary>
-public enum ModeType
-{
-	十字键滑杆模式 = 0,
-	自动追寻模式 = 1,
-	滑动模型模式 = 2
-
-}
+//public enum ModeType
+//{
+//	十字键滑杆模式 = 0,
+//	自动追寻模式 = 1,
+//	滑动模型模式 = 2
+//
+//}

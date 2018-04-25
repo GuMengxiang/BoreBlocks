@@ -60,6 +60,7 @@ public class ThisGame_EventManager : MonoBehaviour {
 		}
 		GenerateObject.mPlay.Play();//点击按钮音效
 	}
+	#region 关卡模块
 	/// <summary>
 	/// 打开关卡选择界面
 	/// </summary>
@@ -85,7 +86,7 @@ public class ThisGame_EventManager : MonoBehaviour {
 				foreach (var item in GameLevel.LevelJson) {
 					GameObject leve =(GameObject)Instantiate(Resources.Load("Prefabs/level"),LevelManagTrans.Find("Panel/levelmanaget"));//实例关卡的图标
 				    leve.name=item.Key;
-				leve.GetComponent<Image>().sprite=level_lock_sprite;
+				leve.GetComponent<Image>().sprite=level_lock_sprite;//替换图片
 					leve.transform.localPosition=Vector3.zero;
 					leve.transform.localScale=Vector3.one;
 					if (item.Value==1) {
@@ -140,4 +141,5 @@ public class ThisGame_EventManager : MonoBehaviour {
 		}
 		GenerateObject.mPlay.Play();//点击按钮音效
 	}
+	#endregion
 }

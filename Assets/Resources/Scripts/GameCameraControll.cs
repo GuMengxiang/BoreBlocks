@@ -3,72 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using HedgehogTeam.EasyTouch;
 /// <summary>
 /// 控制摄像机视角转动
 /// </summary>
 public class GameCameraControll : MonoBehaviour {
 	public Transform mCamera_LR;//左右
 	public Transform mCamera_UD;//上下
-
+	bool isBig=true;//放大或者缩小 true:放大 false：缩小
 	// Use this for initialization
 	void Start () {
 		mCamera_LR.Rotate(new Vector3(30.0f,0,0),Space.World);
 		mCamera_UD.position=new Vector3(0.0f,2.5f,-2.5f);
+		OnEnable();
 	}
 	// Update is called once per frame
 	void Update () {
-
-//		PhotonCamContronObj();
-//		LookAtTarget()  ;
-		//mCamera_LR.LookAt(GameObject.Find("CubeControl").transform.position);
-	}
-
-
-
-
-	/// <summary>
-	/// Ioses the cam contron object.  手机端，滑动屏幕旋转物体
-	/// </summary>
-	public void PhotonCamContronObj()
-	{
-/*
- * if (Input.touchCount <= 0)
-		{
-			return;
+		if (mCamera_LR.GetComponent<Camera>().fieldOfView > 120.0f) {
+			isBig=false;//当FOV>120时，将缩小
 		}
-		if (Input.touchCount == 1) //单点触碰
-		{
-			
-			if (Input.GetMouseButtonDown(0)||Input.touches[0].phase==TouchPhase.Moved )//手指在屏幕上移动 
-			{
-				Vector2 m_screenPos=Input.touches[0].deltaPosition;
 
-				//左右
-				if (Input.touches[0].deltaPosition.x>=5.0f||Input.touches[0].deltaPosition.x<=-5.0f)
-				{
-					mCamera_LR.Rotate(new Vector3(0,m_screenPos.x*Time.deltaTime*2f,0),Space.Self);
-					//mCamera_LR.RotateAround(Vector3.zero,Vector3.up,m_screenPos.x*Time.deltaTime*2f);
-				}
-				
-
-					//上下
-				if (Input.touches[0].deltaPosition.y>=5.0f||Input.touches[0].deltaPosition.y<=-5.0f)
-				{
-					mCamera_UD.Rotate(new Vector3(-m_screenPos.y*Time.deltaTime*2f,0,0),Space.World);//(Vector3.right * m_screenPos.y,Space.Self);
-				}
-
-				if (Input.touches[0].deltaPosition.x!=0.0f && Input.touches[0].deltaPosition.y!=0.0f)
-				{
-					return;
-				}
-			
-			}
-		} 
-*/
-
-
+		if (mCamera_LR.GetComponent<Camera>().fieldOfView < 20.0f) {
+			isBig=true;//当FOV<20时，将放大
+		}
 	}
-
+		
 	 
 	#region  碰撞事件
 	//进入碰撞事件
@@ -83,6 +42,37 @@ public class GameCameraControll : MonoBehaviour {
 		//		mCamera_UD.localPosition +=new Vector3(0,0.5f,0);
 
 		Debug.Log("oncollisionEnter:" + m_collision.gameObject.name);
+	}
+	#endregion
+
+
+	#region  EasyTouch事件
+
+	void OnEnable()
+	{
+		EasyTouch.On_PinchIn += On_PinchIn;
+		EasyTouch.On_PinchOut += On_PinchOut;
+	}
+
+	/// <summary>
+	/// 捏放手势开启事件
+	/// </summary>
+	/// <param name="gesture">Gesture.</param>
+	public void On_PinchIn(Gesture gesture)
+	{
+//		if (isBig) {
+			mCamera_LR.GetComponent<Camera>().fieldOfView+=0.5f;
+//		}
+	}
+	/// <summary>
+	/// 捏合手势开启事件
+	/// </summary>
+	/// <param name="gesture">Gesture.</param>
+	public void On_PinchOut(Gesture gesture)
+	{
+//		if (!isBig) {
+			mCamera_LR.GetComponent<Camera>().fieldOfView-=0.5f;
+//		}
 	}
 	#endregion
 }
